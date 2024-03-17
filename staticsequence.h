@@ -21,11 +21,13 @@
 template <class key>
 class StaticSequence : public Sequence<key> {
  public:
-  StaticSequence(unsigned size);
+  StaticSequence();
   ~StaticSequence();
   bool Search(const key& k) const override;
   bool Insert(const key& k) override;
-  virtual bool IsFull() const = 0; // This is a pure virtual function ???????????????????????????????????????
+  void Initialize(unsigned size);
+  void Print() const;
+  bool IsFull() const; 
 
   private:
   unsigned size_;
@@ -34,12 +36,21 @@ class StaticSequence : public Sequence<key> {
 
 
 template <class key>
-StaticSequence<key>::StaticSequence(unsigned size) : size_(size) {
+StaticSequence<key>::StaticSequence() {
+  size_ = 0;
+  data_ = nullptr;
+}
+
+
+template <class key>
+void StaticSequence<key>::Initialize(unsigned size) {
+  size_ = size;
   data_ = new key[size_];
   for (unsigned i = 0; i < size_; i++) {
     data_[i] = 0;
   }
 }
+
 
 template <class key>
 StaticSequence<key>::~StaticSequence() {
@@ -59,7 +70,7 @@ bool StaticSequence<key>::Search(const key& k) const {
 template <class key>
 bool StaticSequence<key>::Insert(const key& k) {
   if (IsFull()) {
-    throw std::out_of_range("Sequence is full");
+    return false;
   }
   for (unsigned i = 0; i < size_; i++) {
     if (data_[i] == k) {
@@ -67,11 +78,33 @@ bool StaticSequence<key>::Insert(const key& k) {
     }
   }
   for (unsigned i = 0; i < size_; i++) {
-    if (data_[i] == 0) {
+    if (long(data_[i]) == 0) {
       data_[i] = k;
       return true;
     }
   }
+}
+
+
+
+template <class key>
+void StaticSequence<key>::Print() const {
+  for (unsigned i = 0; i < size_; i++) {
+    std::cout << data_[i] << " ";
+  }
+  std::cout << std::endl;
+}
+
+
+
+template <class key>
+bool StaticSequence<key>::IsFull() const {
+  for (unsigned i = 0; i < size_; i++) {
+    if (long(data_[i]) == 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 

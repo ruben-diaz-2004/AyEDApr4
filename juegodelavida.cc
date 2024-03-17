@@ -64,15 +64,14 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  HashTable<Nif>* hash_table;
-  // if (options.close_dispersion) {
-  //   hash_table = new HashTable<Nif, 
-  // } else {
-  //   hash_table = new HashTable<Nif,
-  // }
+  Sequence<Nif>* hash_table;
+  if (options.close_dispersion) {
+    hash_table = new HashTable<Nif, StaticSequence<Nif>>(options.tablesize, *dispersion, *exploration, options.blocksize);
+  } else {
+    hash_table = new HashTable<Nif, DynamicSequence<Nif>>(options.tablesize, *dispersion);
+  }
+
   
-
-
 
   bool running = true;
   char stop;
@@ -83,11 +82,18 @@ int main(int argc, char *argv[]) {
     switch(stop) {
       case 'i':
         std::cin >> clave;
-        hash_table->Insert(clave);
+        if (hash_table->Insert(clave)) {
+          std::cout << "Key inserted." << std::endl;
+        } else {
+          std::cout << "Key not inserted." << std::endl;
+        }
+        break;
+      case 'r': // insert random
+          hash_table->Insert(Nif());
         break;
       case 's':
         std::cin >> clave;
-        if (hash_table->Search(clave)) {
+        if (hash_table->Search(Nif(clave))) {
           std::cout << "Key found." << std::endl;
         } else {
           std::cout << "Key not found." << std::endl;

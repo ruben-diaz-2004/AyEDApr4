@@ -22,12 +22,11 @@ class Nif {
   Nif();
   Nif(const long& nif);
   // Sobrecarga de los operadores de comparación
-  bool operator==(const Nif& nif) const;
-  bool operator!=(const Nif& nif) const;
-  bool operator<(const Nif& nif) const;
-  bool operator>(const Nif& nif) const;
+  // bool operator==(const Nif& nif) const;
+  // bool operator!=(const Nif& nif) const;
+  // bool operator<(const Nif& nif) const;
+  // bool operator>(const Nif& nif) const;
 
-  void operator/=(const int& pedro);
   // Conversión implícita a long
   operator long() const;
 
@@ -39,3 +38,69 @@ class Nif {
 
 
 #endif  // NIF_H
+
+
+// template <class key, class Container>
+// HashTable<key, Container>::HashTable(unsigned tablesize, DispersionFunction<key>& fd, ExplorationFunction<key>& fe, unsigned blockSize) : fd_(fd), fe_(fe) {
+//   tableSize_ = tablesize;
+//   blockSize_ = blockSize;
+//   table_ = new Container[tableSize_];
+//   for (unsigned i = 0; i < tableSize_; i++) {
+//     table_[i].Initialize(blockSize_);
+//   }
+// }
+
+
+// template <class key, class Container>
+// HashTable<key, Container>::~HashTable() {
+//   for (unsigned i = 0; i < tableSize_; i++) {
+//     delete table_[i];
+//   }
+// }
+
+
+// template <class key, class Container>
+// bool HashTable<key, Container>::Search(const key& k) const {
+//   unsigned position = fd_(k);
+//   unsigned intento{0};
+//   bool runnig{true};
+//   while (runnig) {
+//     if (table_[position].Search(k)) {
+//       return true;
+//     }
+//     if (!table_[position].IsFull()) {
+//       runnig = false;
+//     }
+//     position = fe_(k, intento);
+//     intento++;
+//   }
+// }
+
+
+// template <class key, class Container>
+// bool HashTable<key, Container>::Insert(const key& k) {
+//   unsigned position = fd_(k);
+//   unsigned intento{0};
+//   bool runnig{true};
+//   while (runnig) {
+//     if (table_[position].Insert(k)) {
+//       return true;
+//     }
+//     if (!table_[position].IsFull()) {
+//       runnig = false;
+//     }
+//     position = fe_(k, intento);
+//     intento++;
+//   }
+// }
+
+
+
+// template <class key, class Container>
+// void HashTable<key, Container>::Print() const {
+//   for (unsigned i = 0; i < tableSize_; i++) {
+//     std::cout << "Posición " << i << ": ";
+//     table_[i].Print();
+//     std::cout << std::endl;
+//   }
+// }

@@ -21,6 +21,7 @@ class Sequence {
   public:
   virtual bool Search(const key& k) const = 0;
   virtual bool Insert(const key& k) = 0;
+  virtual void Print() const = 0;
 };
 
 

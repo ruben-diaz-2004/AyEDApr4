@@ -24,45 +24,111 @@
 template <class key, class Container=StaticSequence<key>>
 class HashTable: public Sequence<key> {
  public:
-  HashTable(unsigned tablesize, const DispersionFunction<key>& fd, const ExplorationFunction<key>& fe, unsigned blockSize);
-  ~HashTable();
-  bool Search(const key& k) const;
-  bool Insert(const key& k);
-  void Print() const;
+  HashTable(unsigned tablesize, DispersionFunction<key>& fd, ExplorationFunction<key>& fe, unsigned blockSize) : fd_{fd}, fe_{fe} {
+    tableSize_ = tablesize;
+    blockSize_ = blockSize;
+    table_ = new Container[tableSize_];
+    for (unsigned i = 0; i < tableSize_; i++) {
+      table_[i].Initialize(blockSize_);
+    }
+  }
+
+  ~HashTable() {
+    delete[] table_;
+  }
+
+  bool Search(const key& k) const {
+    unsigned position = fd_(k);
+    unsigned intento{0};
+    bool runnig{true};
+    while (runnig) {
+      if (table_[position].Search(k)) {
+        return true;
+      }
+      if (!table_[position].IsFull()) {
+        runnig = false;
+      }
+      position = fe_(k, intento);
+      intento++;
+    }
+  }
+
+  bool Insert(const key& k) {
+    unsigned position = fd_(k);
+    unsigned intento{0};
+    bool runnig{true};
+    while (runnig) {
+      if (table_[position].Insert(k)) {
+        return true;
+      }
+      if (!table_[position].IsFull()) {
+        runnig = false;
+      }
+      position = fe_(k, intento);
+      intento++;
+    }
+  }
+
+  void Print() const {
+    for (unsigned i = 0; i < tableSize_; i++) {
+      std::cout << "Posición " << i << ": ";
+      table_[i].Print();
+      std::cout << std::endl;
+    }
+  }
 
  private:
   unsigned tableSize_;
   Container* table_;  
-  const DispersionFunction<key>& fd_;
-  const ExplorationFunction<key>& fe_;
+  DispersionFunction<key>& fd_;
+  ExplorationFunction<key>& fe_;
   unsigned blockSize_;
 };
 
 
 
-template <class key, class Container>
-HashTable<key, Container>::HashTable(unsigned tablesize, const DispersionFunction<key>& fd, const ExplorationFunction<key>& fe, unsigned blockSize) {
-  tableSize_ = tablesize;
-  fd_ = fd;
-  fe_ = fe;
-  blockSize_ = blockSize;
-  table_ = new Container[tableSize_];
-  for (unsigned i = 0; i < tableSize_; i++) {
-    table_[i] = Container(blockSize_);
+
+
+
+
+
+
+
+template <class key>
+class HashTable<key, DynamicSequence<key>>: public Sequence<key> {
+ public:
+  HashTable(unsigned tablesize, DispersionFunction<key>& fd) : fd_{fd} {
+    tableSize_ = tablesize;
+    table_ = new DynamicSequence<key>[tableSize_];
   }
-}
 
-
-template <class key, class Container>
-HashTable<key, Container>::~HashTable() {
-  for (unsigned i = 0; i < tableSize_; i++) {
-    delete table_[i];
+  ~HashTable() {
+    delete[] table_;
   }
-}
 
+  bool Search(const key& k) const {
+    unsigned position = fd_(k);
+    return table_[position].Search(k);
+  }
 
+  bool Insert(const key& k) {
+    unsigned position = fd_(k);
+    return table_[position].Insert(k);
+  }
 
+  void Print() const {
+    for (unsigned i = 0; i < tableSize_; i++) {
+      std::cout << "Posición " << i << ": ";
+      table_[i].Print();
+      std::cout << std::endl;
+    }
+  }
 
+ private:
+  unsigned tableSize_;
+  DynamicSequence<key>* table_;  
+  DispersionFunction<key>& fd_;
+};
 
 
 

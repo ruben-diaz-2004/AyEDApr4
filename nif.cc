@@ -20,7 +20,10 @@
  */
 Nif::Nif() {
   srand(time(NULL));
-    nif_ = rand() % 1000000000;
+    nif_ = rand();
+    while (nif_ % 100000000 != nif_) {
+      nif_ /= 10;
+    }
 }
 
 
@@ -34,26 +37,24 @@ Nif::Nif(const long& nif) {
 
 
 
-bool Nif::operator>(const Nif& nif) const {
-  return nif_ > long(nif);
-}
+// bool Nif::operator>(const Nif& nif) const {
+//   return nif_ > long(nif);
+// }
 
-bool Nif::operator<(const Nif& nif) const {
-  return nif_ < long(nif);
-}
+// bool Nif::operator<(const Nif& nif) const {
+//   return nif_ < long(nif);
+// }
 
-bool Nif::operator==(const Nif& nif) const {
-  return nif_ == long(nif);
-}
+// bool Nif::operator==(const Nif& nif) const {
+//   return nif_ == long(nif);
+// }
 
-bool Nif::operator!=(const Nif& nif) const {
-  return nif_ != long(nif);
-}
+// bool Nif::operator!=(const Nif& nif) const {
+//   return nif_ != long(nif);
+// }
 
 
-void Nif::operator/=(const int& pedro) {
-  nif_ /= pedro;
-}
+
 
 
 

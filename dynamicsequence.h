@@ -22,10 +22,11 @@
 template <class key>
 class DynamicSequence : public Sequence<key> {
  public:
-  DynamicSequence() {}
+  DynamicSequence() { data_.clear(); }
   ~DynamicSequence() {}
   bool Search(const key& k) const override;
-  void Insert(const key& k) override;
+  bool Insert(const key& k) override;
+  void Print() const;
 
   private:
   std::vector<key> data_;
@@ -44,10 +45,19 @@ bool DynamicSequence<key>::Search(const key& k) const {
 }
 
 template <class key>
-void DynamicSequence<key>::Insert(const key& k) {
+bool DynamicSequence<key>::Insert(const key& k) {
   data_.push_back(k);
+  return true;
 }
 
+
+template <class key>
+void DynamicSequence<key>::Print() const {
+  for (key element : data_) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+}
 
 
 #endif  // DYNAMICSEQUENCE_H

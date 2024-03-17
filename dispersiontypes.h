@@ -37,10 +37,11 @@ class SumDispersion : public DispersionFunction<key> {
  public:
   SumDispersion(unsigned tablesize) : tableSize_{tablesize} {}
   unsigned operator()(const key& k) const override {
+    long clave = k;
     unsigned sum = 0;
-    while (long(k) > 0) {
-      sum += long(k) % 10;
-      k /= 10;
+    while (clave > 0) {
+      sum += clave % 10;
+      clave /= 10;
     }
     return sum % tableSize_;
   }
@@ -57,7 +58,7 @@ class PseudoRandomDispersion : public DispersionFunction<key> {
  public:
   PseudoRandomDispersion(unsigned tablesize) : tableSize_{tablesize} {}
   unsigned operator()(const key& k) const override {
-    srand(k);
+    srand(long(k));
     return rand() % tableSize_;
   }
 
