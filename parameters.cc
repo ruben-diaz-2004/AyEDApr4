@@ -16,57 +16,55 @@
 
 
 struct parameters {
-  int dimension;
-  bool two_dim = false;
-  int size_x;
-  int size_y;
-  int cell_type; // 0: Ace110, 1: Ace30, 2: Life23_3, 3: Life51_346
-  int border; // 0: open, 1: periodic, 2: reflective, 3: no border
-  bool open_type = false;
-  std::fstream filename;
-  bool initial_file = false;
+  unsigned tablesize;
+  unsigned fd_code;  // 0: mod, 1: suma, 2: pseudoaleatorio
+  unsigned dispersion_technique; // 0: close, 1: open
+  bool close_dispersion = false;
+  unsigned blocksize;
+  unsigned exploration_code; // 0: linear, 1: quadratic, 2: double, 3: rehashing
 };
 
 parameters parse_args(int argc, char* argv[]) {
   std::vector<std::string> args(argv + 1, argv + argc);
   parameters options;
   for (auto it = args.begin(), end = args.end(); it != end; ++it) {
-    if (*it == "-dim") {
-      options.dimension = std::stoi(*++it);
-      if (options.dimension == 2) {
-        options.two_dim = true;
+    if (*it == "-ts") {
+      options.tablesize = std::stoi(*++it);
+    }
+    else if (*it == "-fd") {
+      if (*++it == "mod") {
+        options.fd_code = 0;
+      } else if (*it == "suma") {
+        options.fd_code = 1;
+      } else if (*it == "pseudoaleatorio") {
+        options.fd_code = 2;
       }
     }
-    else if (*it == "-cell") {
-      if (*++it == "Ace110") {
-        options.cell_type = 0;
-      } else if (*it == "Ace30") {
-        options.cell_type = 1;
-      } else if (*it == "Life23_3") {
-        options.cell_type = 2;
-      } else if (*it == "Life51_346") {
-        options.cell_type = 3;
+    else if (*it == "-hash") {
+      if (*++it == "close") {
+        options.dispersion_technique = 0;
+        options.close_dispersion = true;
+      } else if (*it == "open") {
+        options.dispersion_technique = 1;
       }
     }
-    else if (*it == "-size") {
-      options.size_x = std::stoi(*++it);
-      if (options.two_dim) options.size_y = std::stoi(*++it);
-    } else if (*it == "-border") {
-        if (*++it == "open") {
-          options.border = 0;
-          if (*++it == "1") {
-            options.open_type = true;
-          }
-        } else if (*it == "periodic") {
-          options.border = 1;
-        } else if (*it == "reflective") {
-          options.border = 2;
-        } else if (*it == "noborder") {
-          options.border = 3;
-        }
-    } else if (*it == "-init") {
-      options.filename = std::fstream(*++it);
-      options.initial_file = true;
+    else if (*it == "-bs") {
+      if (options.close_dispersion == false) {
+        std::cerr << "Error: no se puede especificar el tamaño de bloque si la técnica de dispersión no es cerrada" << std::endl;
+        exit(EXIT_SUCCESS);
+      }
+      options.blocksize = std::stoi(*++it);
+    }
+    else if (*it == "-fe") {
+      if (*++it == "linear") {
+        options.exploration_code = 0;
+      } else if (*it == "quadratic") {
+        options.exploration_code = 1;
+      } else if (*it == "double") {
+        options.exploration_code = 2;
+      } else if (*it == "rehashing") {
+        options.exploration_code = 3;
+      }
     }
     else {
       std::cerr << "Error: argumento no válido" << std::endl;

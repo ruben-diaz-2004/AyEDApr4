@@ -27,14 +27,14 @@ class HashTable: public Sequence<key> {
   HashTable(unsigned tablesize, const DispersionFunction<key>& fd, const ExplorationFunction<key>& fe, unsigned blockSize);
   ~HashTable();
   bool Search(const key& k) const;
-  void Insert(const key& k);
+  bool Insert(const key& k);
   void Print() const;
 
  private:
   unsigned tableSize_;
-  Container* table_[];  
+  Container* table_;  
   const DispersionFunction<key>& fd_;
-  const Exploration<key>& fe_;
+  const ExplorationFunction<key>& fe_;
   unsigned blockSize_;
 };
 
@@ -46,9 +46,9 @@ HashTable<key, Container>::HashTable(unsigned tablesize, const DispersionFunctio
   fd_ = fd;
   fe_ = fe;
   blockSize_ = blockSize;
-  table_.resize(tableSize_);
+  table_ = new Container[tableSize_];
   for (unsigned i = 0; i < tableSize_; i++) {
-    table_[i] = new Container(blockSize_);
+    table_[i] = Container(blockSize_);
   }
 }
 

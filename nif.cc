@@ -51,6 +51,10 @@ bool Nif::operator!=(const Nif& nif) const {
 }
 
 
+void Nif::operator/=(const int& pedro) {
+  nif_ /= pedro;
+}
+
 
 
 /**

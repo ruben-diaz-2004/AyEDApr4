@@ -29,12 +29,13 @@ class StaticSequence : public Sequence<key> {
 
   private:
   unsigned size_;
-  key* data_[];
+  key* data_;
 };
 
 
 template <class key>
 StaticSequence<key>::StaticSequence(unsigned size) : size_(size) {
+  data_ = new key[size_];
   for (unsigned i = 0; i < size_; i++) {
     data_[i] = 0;
   }

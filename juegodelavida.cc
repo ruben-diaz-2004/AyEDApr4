@@ -12,16 +12,15 @@
 #include <iostream>
 #include <fstream>
 #include "parameters.cc"
-#include "Cell.h"
-#include "Lattice.h"
-#include "1Dtypes.h"
-#include "2Dtypes.h"
-#include "Acetypes.h"
-#include "Lifetypes.h"
-#include "my_vector.h"
-#include "FactoryCell.h"
-#include "Factorytypes.h"
-#include "position.h"
+#include "dispersionfunction.h"
+#include "dispersiontypes.h"
+#include "explorationfunction.h"
+#include "explorationtypes.h"
+#include "sequence.h"
+#include "dynamicsequence.h"
+#include "staticsequence.h"
+#include "hashtable.h"
+#include "nif.h"
 
 #include <iostream>
 #include <sstream>
@@ -31,97 +30,71 @@
 int main(int argc, char *argv[]) {
   parameters options = parse_args(argc, argv);
 
-  std::cout << "Options menu:" << std::endl << "'x' to exit.\n's' to save configuration.\n'n' to show next generation.\n";
-  std::cout << "'L' to show next 5 generations.\n'c' to show population.\n";
+  std::cout << "Options menu:" << std::endl << "'i' to insert key.\n's' to search key.\n'x' to exit.\n";
 
-
-  FactoryCell* factory;
-  switch(options.cell_type) {
+  DispersionFunction<Nif>* dispersion;
+  switch(options.fd_code) {
     case 0:
-      factory = new FactoryCellACE110();
+      dispersion = new ModuleDispersion<Nif>(options.tablesize);
       break;
     case 1:
-      factory = new FactoryCellACE30();
+      dispersion = new SumDispersion<Nif>(options.tablesize);
       break;
     case 2:
-      factory = new FactoryCellLife23_3();
-      break;
-    case 3:
-      factory = new FactoryCellLife51_346();
+      dispersion = new PseudoRandomDispersion<Nif>(options.tablesize);
       break;
   }
 
 
-  Lattice* lattice;
-  switch(options.border) {
-    case 0:
-      if (options.initial_file) {
-        lattice = new Lattice1D_open(options.filename, *factory, options.open_type);
-      } else {
-        lattice = new Lattice1D_open(options.size_x, *factory, options.open_type);
-      }
-      break;
-    case 1:
-      if (options.initial_file) {
-        lattice = new Lattice1D_periodic(options.filename, *factory);
-      } else {
-        lattice = new Lattice1D_periodic(options.size_x, *factory);
-      }
-      break;
-    case 2:
-      if (options.initial_file) {
-        lattice = new Lattice2D_reflective(options.filename, *factory);
-      } else {
-        lattice = new Lattice2D_reflective(options.size_x, options.size_y, *factory);
-      }
-      break;
-    case 3:
-      if (options.initial_file) {
-        lattice = new Lattice2D_NoBorder(options.filename, *factory);
-      } else {
-        lattice = new Lattice2D_NoBorder(options.size_x, options.size_y, *factory);
-      }
-      break;
+  ExplorationFunction<Nif>* exploration;
+  if (options.close_dispersion) {
+    switch(options.exploration_code) {
+      case 0:
+        exploration = new LinearExploration<Nif>(options.tablesize);
+        break;
+      case 1:
+        exploration = new QuadraticExploration<Nif>(options.tablesize);
+        break;
+      case 2:
+        exploration = new DoubleDispersion<Nif>(options.tablesize, dispersion);
+        break;
+      case 3:
+        exploration = new ReDispersion<Nif>(options.tablesize);
+        break;
+    }
   }
+
+  HashTable<Nif>* hash_table;
+  // if (options.close_dispersion) {
+  //   hash_table = new HashTable<Nif, 
+  // } else {
+  //   hash_table = new HashTable<Nif,
+  // }
   
 
-  std::cout << *lattice << std::endl;
-  bool population = false;
+
+
   bool running = true;
   char stop;
+  long clave;
   while(running) {
+    hash_table->Print();
     std::cin >> stop;
-    switch (stop) {
-      case 'x':
-        running = false;
+    switch(stop) {
+      case 'i':
+        std::cin >> clave;
+        hash_table->Insert(clave);
         break;
-      case 'n': // Calcula y muestra la siguiente generación
-        lattice->nextGeneration();
-        if (population) {
-          std::cout << lattice->Population() << std::endl;
+      case 's':
+        std::cin >> clave;
+        if (hash_table->Search(clave)) {
+          std::cout << "Key found." << std::endl;
         } else {
-            std::cout << *lattice << std::endl;
-          }
-        break;
-      case 'L': // Calcula y muestra las siguientes 5 generaciones
-        for (int i = 0; i < 5; i++) {
-          lattice->nextGeneration();
-          if (population) {
-            std::cout << lattice->Population() << std::endl;
-          } else {
-              std::cout << *lattice << std::endl;
-            }
+          std::cout << "Key not found." << std::endl;
         }
         break;
-      case 'c': // Se muestra la población (número de células vivas) actual
-        population = (population) ? false : true;
-        break;
-      case 's': // Guarda la configuración actual en un fichero
-        std::string file_name;
-        std::cin >> file_name;
-        std::ofstream output_file{file_name};
-        output_file << *lattice;
-        output_file.close();
+      case 'x':
+        running = false;
         break;
     }
   }

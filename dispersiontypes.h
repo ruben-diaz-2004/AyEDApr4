@@ -23,7 +23,7 @@ class ModuleDispersion : public DispersionFunction<key> {
  public:
   ModuleDispersion(unsigned tablesize) : tableSize_{tablesize} {}
   unsigned operator()(const key& k) const override {
-    return k % tableSize_;
+    return long(k) % tableSize_;
   }
 
  private:
@@ -38,8 +38,8 @@ class SumDispersion : public DispersionFunction<key> {
   SumDispersion(unsigned tablesize) : tableSize_{tablesize} {}
   unsigned operator()(const key& k) const override {
     unsigned sum = 0;
-    while (k > 0) {
-      sum += k % 10;
+    while (long(k) > 0) {
+      sum += long(k) % 10;
       k /= 10;
     }
     return sum % tableSize_;

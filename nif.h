@@ -26,6 +26,9 @@ class Nif {
   bool operator!=(const Nif& nif) const;
   bool operator<(const Nif& nif) const;
   bool operator>(const Nif& nif) const;
+
+  void operator/=(const int& pedro);
+  // Conversión implícita a long
   operator long() const;
 
   private:
