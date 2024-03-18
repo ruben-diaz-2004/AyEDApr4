@@ -30,7 +30,7 @@
 int main(int argc, char *argv[]) {
   parameters options = parse_args(argc, argv);
 
-  std::cout << "Options menu:" << std::endl << "'i' to insert key.\n's' to search key.\n'x' to exit.\n";
+  std::cout << "Options menu:" << std::endl << "'i' to insert key.\n'r' to insert random key\n's' to search key.\n'x' to exit.\n";
 
   DispersionFunction<Nif>* dispersion;
   switch(options.fd_code) {

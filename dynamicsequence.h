@@ -24,8 +24,11 @@ class DynamicSequence : public Sequence<key> {
  public:
   DynamicSequence() { data_.clear(); }
   ~DynamicSequence() {}
+  // Busca un elemento en la secuencia
   bool Search(const key& clave) const override;
+  // Inserta un elemento en la secuencia
   bool Insert(const key& clave) override;
+  // Imprime la secuencia
   void Print() const;
 
   private:

@@ -45,6 +45,10 @@ Nif::Nif(const long& nif) {
 }
 
 
+/**
+ * Operador de asignación
+ * @param num Valor del NIF
+ */
 void Nif::operator=(int num) {
   if (num / 100000000 != 0) {
     while (num / 100000000 == 0) {
@@ -84,10 +88,6 @@ void Nif::operator=(int num) {
 // bool Nif::operator!=(const Nif& nif) const {
 //   return nif_ != long(nif);
 // }
-
-
-
-
 
 
 /**

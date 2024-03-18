@@ -24,6 +24,13 @@
 template <class key, class Container=StaticSequence<key>>
 class HashTable: public Sequence<key> {
  public:
+ /**
+  * @brief Constructor de la clase HashTable
+  * @param tablesize Tamaño de la tabla
+  * @param fd Función de dispersión
+  * @param fe Función de exploración
+  * @param blockSize Tamaño del bloque
+ */
   HashTable(unsigned tablesize, DispersionFunction<key>& fd, ExplorationFunction<key>& fe, unsigned blockSize) : fd_{fd}, fe_{fe} {
     tableSize_ = tablesize;
     blockSize_ = blockSize;
@@ -37,6 +44,12 @@ class HashTable: public Sequence<key> {
     delete[] table_;
   }
 
+
+/**
+ * @brief Busca un elemento en la tabla
+ * @param k Clave a buscar
+ * @return true si se ha encontrado, false en caso contrario
+*/
   bool Search(const key& k) const {
     unsigned position = fd_(k);
     unsigned intento{0};
@@ -55,6 +68,12 @@ class HashTable: public Sequence<key> {
     return false;
   }
 
+
+/**
+ * @brief Inserta un elemento en la tabla
+ * @param clave Clave a insertar
+ * @return true si se ha insertado, false en caso contrario
+ */
   bool Insert(const key& clave) {
     unsigned position = fd_(clave);
     unsigned intento{0};
@@ -77,6 +96,10 @@ class HashTable: public Sequence<key> {
     return false;
   }
 
+
+/**
+ * @brief Imprime la tabla
+ */
   void Print() const {
     for (unsigned i = 0; i < tableSize_; i++) {
       std::cout << "Position " << i << ": ";

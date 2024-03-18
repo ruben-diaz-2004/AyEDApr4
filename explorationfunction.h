@@ -18,7 +18,7 @@
 
 template <class key>
 class ExplorationFunction {
- public:
+  public:
   virtual unsigned operator()(const key& k, unsigned i) const = 0;
 };
 

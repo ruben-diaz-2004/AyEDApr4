@@ -35,6 +35,9 @@ class StaticSequence : public Sequence<key> {
 };
 
 
+/**
+ * @brief Constructor de la clase StaticSequence
+*/
 template <class key>
 StaticSequence<key>::StaticSequence() {
   size_ = 0;
@@ -42,6 +45,10 @@ StaticSequence<key>::StaticSequence() {
 }
 
 
+/**
+ * @brief Inicializa la secuencia
+ * @param size Tamaño de la secuencia
+*/
 template <class key>
 void StaticSequence<key>::Initialize(int size) {
   long value = 0;
@@ -53,11 +60,20 @@ void StaticSequence<key>::Initialize(int size) {
 }
 
 
+/**
+ * @brief Destructor de la clase StaticSequence
+*/
 template <class key>
 StaticSequence<key>::~StaticSequence() {
   delete[] data_;
 }
 
+
+/**
+ * @brief Busca un elemento en la secuencia
+ * @param k Clave a buscar
+ * @return true si se ha encontrado, false en caso contrario
+*/
 template <class key>
 bool StaticSequence<key>::Search(const key& k) const {
   for (unsigned i = 0; i < size_; i++) {
@@ -68,6 +84,12 @@ bool StaticSequence<key>::Search(const key& k) const {
   return false;
 }
 
+
+/**
+ * @brief Inserta un elemento en la secuencia
+ * @param k Clave a insertar
+ * @return true si se ha insertado, false en caso contrario
+*/
 template <class key>
 bool StaticSequence<key>::Insert(const key& k) {
   if (IsFull()) {
@@ -88,7 +110,9 @@ bool StaticSequence<key>::Insert(const key& k) {
 }
 
 
-
+/**
+ * @brief Imprime la secuencia
+*/
 template <class key>
 void StaticSequence<key>::Print() const {
   for (unsigned i = 0; i < size_; i++) {
@@ -98,7 +122,10 @@ void StaticSequence<key>::Print() const {
 }
 
 
-
+/**
+ * @brief Comprueba si la secuencia está llena
+ * @return true si está llena, false en caso contrario
+*/
 template <class key>
 bool StaticSequence<key>::IsFull() const {
   for (unsigned i = 0; i < size_; i++) {

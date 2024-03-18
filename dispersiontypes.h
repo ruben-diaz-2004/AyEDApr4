@@ -21,6 +21,7 @@
 template <class key>
 class ModuleDispersion : public DispersionFunction<key> {
  public:
+ // Constructor
   ModuleDispersion(unsigned tablesize) : tableSize_{tablesize} {}
   unsigned operator()(const key& clave) const {
     std::cout << "ModuleDispersion: " << long(clave) % tableSize_ << std::endl;
