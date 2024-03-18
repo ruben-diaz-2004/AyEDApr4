@@ -50,13 +50,13 @@ int main(int argc, char *argv[]) {
   if (options.close_dispersion) {
     switch(options.exploration_code) {
       case 0:
-        exploration = new LinearExploration<Nif>(options.tablesize);
+        exploration = new LinearExploration<Nif>();
         break;
       case 1:
-        exploration = new QuadraticExploration<Nif>(options.tablesize);
+        exploration = new QuadraticExploration<Nif>();
         break;
       case 2:
-        exploration = new DoubleDispersion<Nif>(options.tablesize, dispersion);
+        exploration = new DoubleDispersion<Nif>(*dispersion);
         break;
       case 3:
         exploration = new ReDispersion<Nif>(options.tablesize);

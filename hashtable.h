@@ -48,7 +48,7 @@ class HashTable: public Sequence<key> {
       if (!table_[position].IsFull()) {
         runnig = false;
       }
-      position = fe_(k, intento);
+      position =  (position + fe_(k, intento)) % tableSize_;
       intento++;
     }
   }
@@ -64,14 +64,14 @@ class HashTable: public Sequence<key> {
       if (!table_[position].IsFull()) {
         runnig = false;
       }
-      position = fe_(k, intento);
+      position = (position + fe_(k, intento)) % tableSize_;
       intento++;
     }
   }
 
   void Print() const {
     for (unsigned i = 0; i < tableSize_; i++) {
-      std::cout << "Posición " << i << ": ";
+      std::cout << "Position " << i << ": ";
       table_[i].Print();
       std::cout << std::endl;
     }
@@ -118,7 +118,7 @@ class HashTable<key, DynamicSequence<key>>: public Sequence<key> {
 
   void Print() const {
     for (unsigned i = 0; i < tableSize_; i++) {
-      std::cout << "Posición " << i << ": ";
+      std::cout << "Position " << i << ": ";
       table_[i].Print();
       std::cout << std::endl;
     }

@@ -23,13 +23,10 @@
 template <class key>
 class LinearExploration : public ExplorationFunction<key> {
  public:
-    LinearExploration(unsigned tableSize) : tableSize_{tableSize} {}
+    LinearExploration() {}
     unsigned operator()(const key& k, unsigned i) const override {
-        return (k + i) % tableSize_;
+        return i;
     }
-
- private:
-  unsigned tableSize_;
 };
 
 
@@ -41,13 +38,10 @@ class LinearExploration : public ExplorationFunction<key> {
 template <class key>
 class QuadraticExploration : public ExplorationFunction<key> {
  public:
-    QuadraticExploration(unsigned tableSize) : tableSize_{tableSize} {}
+    QuadraticExploration() {}
     unsigned operator()(const key& k, unsigned i) const override {
-        return (k + i * i) % tableSize_;
+        return (i * i);
     }
-
- private:
-  unsigned tableSize_;
 };
 
 
@@ -59,14 +53,13 @@ class QuadraticExploration : public ExplorationFunction<key> {
 template <class key>
 class DoubleDispersion : public ExplorationFunction<key> {
  public:
-    DoubleDispersion(unsigned tableSize, DispersionFunction<key>* f) : tableSize_{tableSize}, f_{f} {}
+    DoubleDispersion(DispersionFunction<key>& f) : f_{f} {}
     unsigned operator()(const key& k, unsigned i) const override {
-        return (f_->operator()(k) + i) % tableSize_;
+        return (f_(k) * i);
     }
 
  private:
-  unsigned tableSize_;
-  DispersionFunction<key>* f_;
+  DispersionFunction<key>& f_;
 };
 
 
@@ -84,10 +77,10 @@ class ReDispersion : public ExplorationFunction<key> {
     ReDispersion(unsigned tableSize) : tableSize_{tableSize} {}
     unsigned operator()(const key& k, unsigned i) const override {
         srand(k);
-        for (unsigned j = 0; j < i; j++) {
+        for (unsigned j{1}; j < i; j++) {
             rand();
         }
-        return rand() % tableSize_;
+        return (rand() % tableSize_);
     }
 
  private:
