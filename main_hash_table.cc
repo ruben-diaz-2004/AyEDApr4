@@ -43,6 +43,9 @@ int main(int argc, char *argv[]) {
     case 2:
       dispersion = new PseudoRandomDispersion<Nif>(options.tablesize);
       break;
+    default:
+      std::cerr << "Error: unknown dispersion function." << std::endl;
+      exit(EXIT_SUCCESS);
   }
 
 
@@ -61,6 +64,9 @@ int main(int argc, char *argv[]) {
       case 3:
         exploration = new ReDispersion<Nif>(options.tablesize);
         break;
+      default:
+        std::cerr << "Error: unknown exploration function." << std::endl;
+        exit(EXIT_SUCCESS);
     }
   }
 

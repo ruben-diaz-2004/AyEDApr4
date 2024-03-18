@@ -32,9 +32,41 @@ Nif::Nif() {
  * @param nif Valor del NIF
  */
 Nif::Nif(const long& nif) {
-  nif_ = nif;
+  long new_nif = nif;
+  while (new_nif / 100000000 == 0) {
+    new_nif *= 10;
+  }
+
+  while (new_nif % 100000000 != new_nif) {
+    new_nif /= 10;
+  }
+
+  nif_ = new_nif;
 }
 
+
+void Nif::operator=(int num) {
+  if (num / 100000000 != 0) {
+    while (num / 100000000 == 0) {
+      num *= 10;
+    }
+    while (num % 100000000 != num) {
+      num /= 10;
+  }
+  }
+  nif_ = num;
+}
+
+
+
+// Nif::Nif(const long& nif) {
+//   if (nif / 100000000 != 0) {
+//     std::cerr << "NIF no válido" << std::endl;
+//     exit(1);
+//   }
+
+//   nif_ = nif;
+// }
 
 
 // bool Nif::operator>(const Nif& nif) const {

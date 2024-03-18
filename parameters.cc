@@ -16,12 +16,12 @@
 
 
 struct parameters {
-  unsigned tablesize;
-  unsigned fd_code;  // 0: mod, 1: suma, 2: pseudoaleatorio
-  unsigned dispersion_technique; // 0: close, 1: open
+  int tablesize;
+  int fd_code;  // 0: mod, 1: suma, 2: pseudoaleatorio
+  int dispersion_technique; // 0: close, 1: open
   bool close_dispersion = false;
-  unsigned blocksize;
-  unsigned exploration_code; // 0: linear, 1: quadratic, 2: double, 3: rehashing
+  int blocksize;
+  int exploration_code; // 0: linear, 1: quadratic, 2: double, 3: rehashing
 };
 
 parameters parse_args(int argc, char* argv[]) {

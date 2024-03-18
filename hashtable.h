@@ -42,6 +42,7 @@ class HashTable: public Sequence<key> {
     unsigned intento{0};
     bool runnig{true};
     while (runnig) {
+      if (intento >= tableSize_*3) return false;
       if (table_[position].Search(k)) {
         return true;
       }
@@ -51,22 +52,29 @@ class HashTable: public Sequence<key> {
       position =  (position + fe_(k, intento)) % tableSize_;
       intento++;
     }
+    return false;
   }
 
-  bool Insert(const key& k) {
-    unsigned position = fd_(k);
+  bool Insert(const key& clave) {
+    unsigned position = fd_(clave);
     unsigned intento{0};
     bool runnig{true};
     while (runnig) {
-      if (table_[position].Insert(k)) {
+      if (intento >= tableSize_ * blockSize_ * 10) {
+        std::cout << "Tiempo agotado" << std::endl;
+        return false;
+      }
+      if (table_[position].Insert(clave)) {
         return true;
       }
       if (!table_[position].IsFull()) {
+        std::cout << "Celda no llena" << std::endl;
         runnig = false;
       }
-      position = (position + fe_(k, intento)) % tableSize_;
+      position = (fd_(clave) + fe_(clave, intento)) % tableSize_;
       intento++;
     }
+    return false;
   }
 
   void Print() const {

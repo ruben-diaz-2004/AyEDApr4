@@ -25,6 +25,7 @@ class LinearExploration : public ExplorationFunction<key> {
  public:
     LinearExploration() {}
     unsigned operator()(const key& k, unsigned i) const override {
+        std::cout << "Exploracion lineal" << std::endl;
         return i;
     }
 };
@@ -40,6 +41,7 @@ class QuadraticExploration : public ExplorationFunction<key> {
  public:
     QuadraticExploration() {}
     unsigned operator()(const key& k, unsigned i) const override {
+        std::cout << "Exploracion cuadratica" << std::endl;
         return (i * i);
     }
 };
@@ -53,13 +55,15 @@ class QuadraticExploration : public ExplorationFunction<key> {
 template <class key>
 class DoubleDispersion : public ExplorationFunction<key> {
  public:
-    DoubleDispersion(DispersionFunction<key>& f) : f_{f} {}
-    unsigned operator()(const key& k, unsigned i) const override {
-        return (f_(k) * i);
+    DoubleDispersion(DispersionFunction<key>& fd) : funcion_dispersion_{fd} {}
+    unsigned operator()(const key& clave, unsigned intento) const override {
+        if (funcion_dispersion_(clave) == 0) return intento;
+        std::cout << "Doble dispersión" << std::endl;
+        return (funcion_dispersion_(clave) * intento);
     }
 
  private:
-  DispersionFunction<key>& f_;
+  DispersionFunction<key>& funcion_dispersion_;
 };
 
 
@@ -75,9 +79,10 @@ template <class key>
 class ReDispersion : public ExplorationFunction<key> {
  public:
     ReDispersion(unsigned tableSize) : tableSize_{tableSize} {}
-    unsigned operator()(const key& k, unsigned i) const override {
-        srand(k);
-        for (unsigned j{1}; j < i; j++) {
+    unsigned operator()(const key& clave, unsigned intento) const override {
+        std::cout << "Redispersión" << std::endl;
+        srand(clave);
+        for (unsigned j{0}; j < intento; j++) {
             rand();
         }
         return (rand() % tableSize_);

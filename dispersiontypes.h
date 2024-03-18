@@ -22,8 +22,9 @@ template <class key>
 class ModuleDispersion : public DispersionFunction<key> {
  public:
   ModuleDispersion(unsigned tablesize) : tableSize_{tablesize} {}
-  unsigned operator()(const key& k) const override {
-    return long(k) % tableSize_;
+  unsigned operator()(const key& clave) const {
+    std::cout << "ModuleDispersion: " << long(clave) % tableSize_ << std::endl;
+    return long(clave) % tableSize_;
   }
 
  private:
@@ -36,13 +37,14 @@ template <class key>
 class SumDispersion : public DispersionFunction<key> {
  public:
   SumDispersion(unsigned tablesize) : tableSize_{tablesize} {}
-  unsigned operator()(const key& k) const override {
-    long clave = k;
+  unsigned operator()(const key& param_key) const {
+    long clave = param_key;
     unsigned sum = 0;
     while (clave > 0) {
       sum += clave % 10;
       clave /= 10;
     }
+    std::cout << "SumaDispersion: " << sum % tableSize_ << std::endl;
     return sum % tableSize_;
   }
 
@@ -57,8 +59,8 @@ template <class key>
 class PseudoRandomDispersion : public DispersionFunction<key> {
  public:
   PseudoRandomDispersion(unsigned tablesize) : tableSize_{tablesize} {}
-  unsigned operator()(const key& k) const override {
-    srand(long(k));
+  unsigned operator()(const key& clave) const {
+    srand(long(clave));
     return rand() % tableSize_;
   }
 

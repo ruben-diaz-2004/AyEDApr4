@@ -24,8 +24,8 @@ class DynamicSequence : public Sequence<key> {
  public:
   DynamicSequence() { data_.clear(); }
   ~DynamicSequence() {}
-  bool Search(const key& k) const override;
-  bool Insert(const key& k) override;
+  bool Search(const key& clave) const override;
+  bool Insert(const key& clave) override;
   void Print() const;
 
   private:
@@ -35,9 +35,9 @@ class DynamicSequence : public Sequence<key> {
 
 
 template <class key>
-bool DynamicSequence<key>::Search(const key& k) const {
+bool DynamicSequence<key>::Search(const key& clave) const {
   for (key element : data_) {
-    if (element == k) {
+    if (element == clave) {
       return true;
     }
   }
@@ -45,8 +45,8 @@ bool DynamicSequence<key>::Search(const key& k) const {
 }
 
 template <class key>
-bool DynamicSequence<key>::Insert(const key& k) {
-  data_.push_back(k);
+bool DynamicSequence<key>::Insert(const key& clave) {
+  data_.push_back(clave);
   return true;
 }
 

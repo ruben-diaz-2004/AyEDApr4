@@ -25,7 +25,7 @@ class StaticSequence : public Sequence<key> {
   ~StaticSequence();
   bool Search(const key& k) const override;
   bool Insert(const key& k) override;
-  void Initialize(unsigned size);
+  void Initialize(int size);
   void Print() const;
   bool IsFull() const; 
 
@@ -43,11 +43,12 @@ StaticSequence<key>::StaticSequence() {
 
 
 template <class key>
-void StaticSequence<key>::Initialize(unsigned size) {
+void StaticSequence<key>::Initialize(int size) {
+  long value = 0;
   size_ = size;
   data_ = new key[size_];
   for (unsigned i = 0; i < size_; i++) {
-    data_[i] = 0;
+    data_[i] = value;
   }
 }
 
@@ -83,6 +84,7 @@ bool StaticSequence<key>::Insert(const key& k) {
       return true;
     }
   }
+  return false;
 }
 
 

@@ -21,11 +21,9 @@ class Nif {
   public:
   Nif();
   Nif(const long& nif);
-  // Sobrecarga de los operadores de comparación
-  // bool operator==(const Nif& nif) const;
-  // bool operator!=(const Nif& nif) const;
-  // bool operator<(const Nif& nif) const;
-  // bool operator>(const Nif& nif) const;
+
+  // Operador de comparación
+  void operator=(int num);
 
   // Conversión implícita a long
   operator long() const;
